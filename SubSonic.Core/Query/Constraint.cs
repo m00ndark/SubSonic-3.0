@@ -375,7 +375,17 @@ namespace SubSonic.Query
             return sOut;
         }
 
-        #endregion
+        /// <summary> 
+        /// 
+        /// </summary> 
+         public bool HasOpeningParantheses { get; set; } 
+
+         /// <summary> 
+         /// 
+         /// </summary> 
+         public bool HasClosingParantheses { get; set; }
+		
+		#endregion
 
 
         /// <summary>

@@ -53,7 +53,7 @@ namespace SubSonic.Extensions
         /// <returns></returns>
         public static IList<Constraint> ParseConstraints(this Expression exp)
         {
-            QueryVisitor q = new QueryVisitor();
+            QueryVisitor2 q = new QueryVisitor2();
             return q.GetConstraints(exp);
         }
 
@@ -64,7 +64,7 @@ namespace SubSonic.Extensions
         /// <returns></returns>
         public static Constraint ParseConstraint(this LambdaExpression expression)
         {
-            QueryVisitor q = new QueryVisitor();
+            QueryVisitor2 q = new QueryVisitor2();
             var constraints = q.GetConstraints(expression);
 
             Constraint result = constraints.Count > 0 ? constraints[0] : new Constraint();

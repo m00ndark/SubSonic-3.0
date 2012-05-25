@@ -82,6 +82,7 @@
     <Compile Include="DataProviders\MySQL\MySqlProvider.cs" />
     <Compile Include="DataProviders\SqlServer\SqlServerProvider.cs" />
     <Compile Include="DataProviders\SQLite\SQLiteProvider.cs" />
+    <Compile Include="Extensions\QueryVisitor2.cs" />
     <Compile Include="Linq\Translation\CountOrderByRemover.cs" />
     <Compile Include="Repository\SimpleRepositoryOptions.cs" />
     <Compile Include="Repository\SimpleRepositoryOptionsExtensions.cs" />

@@ -1,4 +1,14 @@
-﻿// 
+﻿/*
+ * 
+ *    REPLACED BY QueryVisitor2.cs
+ *    .. which does not yet fully implement everything in this class..
+ *     (specifically VisitUnary and VisitMethodCall)
+ *    .. therefore it is still kept for reference
+ * 
+ * 
+
+
+// 
 //   SubSonic - http://subsonicproject.com
 // 
 //   The contents of this file are subject to the New BSD
@@ -326,3 +336,4 @@ namespace SubSonic.Extensions
         }
     }
 }
+*/

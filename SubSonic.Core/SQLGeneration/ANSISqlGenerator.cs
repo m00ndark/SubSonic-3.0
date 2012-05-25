@@ -279,6 +279,8 @@ namespace SubSonic.SqlGeneration
 		/// <returns></returns>
 		public virtual string GenerateConstraints()
 		{
+			int openingParanthesesCount = 0;
+
 			string whereOperator = this.sqlFragment.WHERE;
 
 			if (query.Aggregates.Count > 0 && query.Aggregates.Any(x => x.AggregateType == AggregateFunction.GroupBy))
@@ -350,6 +352,12 @@ namespace SubSonic.SqlGeneration
 
 				if (c.Comparison != Comparison.OpenParentheses && c.Comparison != Comparison.CloseParentheses)
 					sb.Append(whereOperator);
+
+				if (c.HasOpeningParantheses)
+				{
+					sb.Append("(");
+					openingParanthesesCount++;
+				}
 
 				if (c.Comparison == Comparison.BetweenAnd)
 				{
@@ -427,9 +435,19 @@ namespace SubSonic.SqlGeneration
 							sb.Append(c.ParameterName);
 					}
 				}
+				if (c.HasClosingParantheses)
+				{
+					sb.Append(")");
+					openingParanthesesCount--;
+				}
 				indexer++;
 
 				isFirst = false;
+			}
+
+			while (openingParanthesesCount-- > 0)
+			{
+				sb.Append(")");
 			}
 
 			string result = sb.ToString();
