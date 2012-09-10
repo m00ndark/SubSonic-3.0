@@ -156,7 +156,11 @@ namespace SubSonic.Linq.Structure
                     if (me != null)
                     {
                         try {
-                            bindings.Add(Expression.Bind(mi, me));
+                            if (mi is PropertyInfo && ((PropertyInfo) mi).PropertyType.IsAssignableFrom(me.Type)
+                                || mi is FieldInfo && ((FieldInfo) mi).FieldType.IsAssignableFrom(me.Type))
+                            {
+                                bindings.Add(Expression.Bind(mi, me));
+                            }
                         } catch {
                             //this is only here until I rewrite this whole thing
                         }
