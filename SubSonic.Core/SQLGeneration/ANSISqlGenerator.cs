@@ -289,6 +289,7 @@ namespace SubSonic.SqlGeneration
 			StringBuilder sb = new StringBuilder();
 			sb.AppendLine();
 			bool isFirst = true;
+			int startOfExpression = 0;
 
 			//int paramCount;
 			bool expressionIsOpen = false;
@@ -355,6 +356,10 @@ namespace SubSonic.SqlGeneration
 
 				if (c.HasOpeningParantheses)
 				{
+					if (isFirst)
+					{
+						startOfExpression = sb.Length;
+					}
 					sb.Append("(");
 					openingParanthesesCount++;
 				}
@@ -445,9 +450,16 @@ namespace SubSonic.SqlGeneration
 				isFirst = false;
 			}
 
-			while (openingParanthesesCount-- > 0)
+			while (openingParanthesesCount > 0)
 			{
 				sb.Append(")");
+				openingParanthesesCount--;
+			}
+
+			while (openingParanthesesCount < 0)
+			{
+				sb.Insert(startOfExpression, '(');
+				openingParanthesesCount++;
 			}
 
 			string result = sb.ToString();
