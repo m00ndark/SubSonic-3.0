@@ -66,6 +66,16 @@ namespace SubSonic.Extensions
 			bool isConditional = ExpressionTypeIsConditional(binary);
 			bool isComparison = ExpressionTypeIsComparison(binary);
 
+			Expression bLeft = binary.Left;
+			Expression bRight = binary.Right;
+
+			if (isConditional && ExpressionTypeIsComparison(binary.Left))
+			{
+				Expression tempExp = bRight;
+				bRight = bLeft;
+				bLeft = tempExp;
+			}
+
 			if (isComparison)
 			{
 				ConstraintType constraintType = (_conditionalConstraintTypeStack.Count > 0 ? _conditionalConstraintTypeStack.Peek() : ConstraintType.Where);
@@ -74,11 +84,11 @@ namespace SubSonic.Extensions
 
 			_binaryDirectionIsLeftStack.Push(true);
 
-			Expression left = Visit(binary.Left);
+			Expression left = Visit(bLeft);
 
 			_binaryDirectionIsLeftStack.Pop();
 
-			if (ExpressionTypeIsComparison(binary.Left))
+			if (ExpressionTypeIsComparison(bLeft))
 				_constraints.Last().HasOpeningParantheses = true;
 
 			if (isConditional)
@@ -86,11 +96,11 @@ namespace SubSonic.Extensions
 
 			_binaryDirectionIsLeftStack.Push(false);
 
-			Expression right = Visit(binary.Right);
+			Expression right = Visit(bRight);
 
 			_binaryDirectionIsLeftStack.Pop();
 
-			if (ExpressionTypeIsComparison(binary.Right))
+			if (ExpressionTypeIsComparison(bRight))
 				_constraints.Last().HasClosingParantheses = true;
 
 			if (isConditional)
@@ -111,7 +121,7 @@ namespace SubSonic.Extensions
 				}
 			}
 
-			if (left != binary.Left || right != binary.Right || conversion != binary.Conversion)
+			if (left != bLeft || right != bRight || conversion != binary.Conversion)
 			{
 				return (binary.NodeType == ExpressionType.Coalesce
 					? Expression.Coalesce(left, right, conversion as LambdaExpression)
